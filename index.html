@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Scoop | The App Name</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+	 <script>
+	 	var teamWorkApp = angular.module('teamWorkApp', []);
+
+	 	teamWorkApp.controller('projects', function($scope, $http){
+	 		
+	 		$http.get('https://{{REPLACE WIHT YOUR APP}}.teamwork.com/projects.json?status=ACTIVE' ,
+	 		{ 
+	 			headers:{
+	 			  	'Authorization' : "BASIC " + window.btoa( "--YOUR API KEY####:####--" )
+	 			  }
+
+	 		}).then(function(res){
+	 			$scope.collectionProjects = res.data;
+	 			console.log($scope.collectionProjects);
+	 		});
+
+		    $scope.comUpdate = function (projectID){
+
+			    $http.get('https://{{REPLACE WIHT YOUR APP}}.teamwork.com/projects.json?status=ACTIVE' ,
+					    {
+						    headers:{
+							    'Authorization' : "BASIC " + window.btoa( "--YOUR API KEY####:####--" )
+						    }
+
+					    }).then(function(res){
+				    $scope.collectionProjects = res.data;
+				    console.log($scope.collectionProjects);
+			    });
+		    }
+
+	 	});
+	    var refresh = function(){
+		    window.location.reload(true);
+	    }
+	    setTimeout(refresh, 100000);
+	 </script>
+	<style>
+		body{
+			font-family: sans-serif;
+			background: #787878;
+		}
+		h1{
+			color: #ffffff;
+		}
+		#theGurTable{
+			background: rgb(77, 79, 78);
+			width:100%;
+		}
+		th{
+			background: #1d2d42;
+			color:#FFF;
+			padding:10px;
+		}
+		td{
+			padding:10px;
+		}
+		.projectColumn{
+			background: rgba(156, 203, 243, 0.26);
+			font-weight: bold;
+			font-size:.8em;
+		}
+		.statusColumn{
+			background: rgba(209, 208, 170, 0.25);
+			font-size:.8em;
+		}
+		tr:nth-child(even){
+			background: #e5e5e5
+		}
+		tr:nth-child(odd){
+			background: #ffffff;
+		}
+
+	</style>
+</head>
+<body>
+<h1>The Scoop - By Aaron Blakeley v0.1</h1>
+<div ng-app="teamWorkApp">
+	<div ng-controller="projects">
+		<table id="theGurTable">
+			<tr>
+				<th>Project Name</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+			<tr ng-repeat='project in collectionProjects.projects'>
+				<td class="projectColumn"><a target="_blank" href="https://{{REPLACE WIHT YOUR APP}}.teamwork.com/projects/{{project.id}}/overview">{{project.name}}</a></td>
+				<td class="statusColumn">{{project.announcement}}</td>
+				<td>
+					<a target="_blank" href="https://{{REPLACE WIHT YOUR APP}}.teamwork.com/projects/{{project.id}}/projectsettings" >Update Status</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</div>
+</body>
+</html>
